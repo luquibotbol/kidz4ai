@@ -1,0 +1,69 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body { height: 100% }
+body {
+  background: theme(colors.canvas);
+  color: theme(colors.ink.DEFAULT);
+  font-family: theme(fontFamily.sans);
+  -webkit-font-smoothing: antialiased;
+  overscroll-behavior-y: none;
+}
+* { -webkit-tap-highlight-color: transparent }
+
+/* Numbers are the point of this app. Never let them reflow. */
+.tnum { font-variant-numeric: tabular-nums; font-feature-settings: "tnum" 1 }
+
+@layer components {
+  .btn {
+    @apply inline-flex w-full items-center justify-center gap-2 rounded-pill px-5 py-3
+           text-[15px] font-semibold tracking-[-0.01em] transition
+           active:scale-[.985] disabled:pointer-events-none disabled:opacity-40;
+  }
+  .btn-primary { @apply bg-ink text-white hover:bg-ink/90 }
+  .btn-accent  { @apply bg-acc text-white hover:bg-acc-dark }
+  .btn-quiet   { @apply border border-line-strong bg-surface text-ink hover:border-ink/30 }
+
+  .card  { @apply rounded-card border border-line bg-surface }
+  .eyebrow { @apply text-[11px] font-semibold uppercase tracking-[0.13em] text-ink-faint }
+
+  .field {
+    @apply w-full rounded-card border border-line-strong bg-surface px-4 py-3
+           outline-none transition placeholder:text-ink-faint
+           focus:border-acc focus:ring-4 focus:ring-acc/10;
+    /* 16px minimum. iOS Safari zooms the whole page on focus for anything
+       smaller, which is what made the coach unusable on a phone. */
+    font-size: 16px;
+  }
+}
+
+/* Visible keyboard focus everywhere, without a ring on mouse clicks. */
+:focus-visible { outline: 2px solid theme(colors.acc.DEFAULT); outline-offset: 2px }
+
+::-webkit-scrollbar { width: 7px; height: 7px }
+::-webkit-scrollbar-thumb { background: theme(colors.line.strong); border-radius: 7px }
+
+.confetti { position: fixed; inset: 0; pointer-events: none; z-index: 70; overflow: hidden }
+.confetti i {
+  position: absolute; top: 16%; width: 7px; height: 11px; border-radius: 1px;
+  animation: fall .9s cubic-bezier(.3,.6,.5,1) forwards;
+}
+@keyframes fall {
+  0%   { transform: translateY(-12px) rotate(0); opacity: 1 }
+  100% { transform: translateY(260px) rotate(400deg); opacity: 0 }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important;
+                            transition-duration: .01ms !important; scroll-behavior: auto !important }
+}
+
+/* Same rule for every other control, including ones that don't use .field.
+   Anything under 16px triggers the iOS focus-zoom. */
+input, textarea, select, button { font-size: 16px }
+input[type="checkbox"], input[type="radio"] { font-size: inherit }
+
+/* The app is a full-height shell: the tab bar is fixed, so nothing should
+   rubber-band the page behind it. */
+html, body { overscroll-behavior-y: none }

@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "kids4ai",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "workshop-app", "run", "dev"],
+      "port": 3000
+    }
+  ]
+}

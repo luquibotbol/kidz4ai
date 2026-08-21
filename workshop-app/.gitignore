@@ -1,0 +1,26 @@
+node_modules
+.next
+.env.local
+.env*.local
+*.png
+/tmp
+next-env.d.ts
+tsconfig.tsbuildinfo
+
+.open-next
+.wrangler
+cloudflare-env.d.ts
+.dev.vars
+
+# ---- private, deliberately untracked ----
+# The repo is PUBLIC. These hold a minor's profile, the behavioural research
+# behind the product, and the decision log — which docs/02 itself calls the
+# asset a competitor can't get from screenshots. They stay on disk and keep
+# working locally; they just don't get published.
+docs/
+CLAUDE.md
+HANDOFF.md
+START-HERE.md
+
+# The real domain and alert sender. This repo is public.
+wrangler.private.jsonc

@@ -1,0 +1,39 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "kids4ai",
+  "main": ".open-next/worker.js",
+  // nodejs_compat is required by @opennextjs/cloudflare, and separately by
+  // lib/auth.ts, which uses node:crypto for the session HMAC.
+  "compatibility_date": "2026-08-18",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "observability": { "enabled": true },
+  // Minor-facing app: every version getting its own public preview URL is
+  // extra public surface for no benefit. workers.dev stays on — that is the
+  // URL the kid uses until a custom domain exists.
+  "preview_urls": false,
+  // The app's public address is NOT committed. This repo is public and the
+  // domain is personal, so the real route lives in wrangler.private.jsonc
+  // (gitignored) and `npm run deploy` points at that with -c. Deploying with
+  // THIS config attaches no custom domain, which is what a fork should get.
+  // PARENT_EMAIL is a Workers SECRET, not a var — it is a personal inbox and
+  // this repo is public. ALERT_FROM is a placeholder here for the same reason:
+  // the real sender is on a personal domain and lives in the private config.
+  "vars": { "ALERT_FROM": "alerts@example.com" },
+  // Restricted to a single sender so a compromised Worker cannot spoof other
+  // addresses on the domain. Spec 09 uses this for the self-harm/violence
+  // carve-out and for flag reports.
+  "send_email": [
+    { "name": "EMAIL", "allowed_sender_addresses": ["alerts@example.com"] }
+  ],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "kids4ai",
+      "database_id": "2f1a0aee-6318-4fd7-9bcd-bb2925396c95"
+    }
+  ]
+}
